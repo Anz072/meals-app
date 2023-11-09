@@ -7,12 +7,17 @@ function MealsOverview({ navigation, route }) {
 
   const displayedMeals = MEALS.filter((mealItem) => {
     return mealItem.categoryIds.indexOf(catID) >= 0;
-});
+  });
 
   const renderItemMeal = (itemData) => {
-    return (
-      <MealItem item={itemData.item}/>
-    );
+    const mealProps = {
+      title: itemData.item.title,
+      imageUrl: itemData.item.imageUrl,
+      Duration: itemData.item.duration,
+      Complexity: itemData.item.complexity,
+      Affordablity: itemData.item.affordability,
+    };
+    return <MealItem {...mealProps} />;
   };
   return (
     <View>
