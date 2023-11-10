@@ -1,3 +1,4 @@
+import React from "react";
 import {
   View,
   Text,
@@ -6,9 +7,24 @@ import {
   Image,
   Platform,
 } from "react-native";
+import { useNavigation } from "@react-navigation/native";
+import MealDetails from "./MealDetails";
 
-const MealItem = ({ title, imageUrl, Duration, Complexity, Affordablity }) => {
-  const mealItemPress = () => {};
+const MealItem = ({
+  id,
+  title,
+  imageUrl,
+  Duration,
+  Complexity,
+  Affordablity,
+}) => {
+  const navigation = useNavigation();
+  const mealItemPress = () => {
+    console.log();
+    navigation.navigate("SpecificMeal", {
+      mealID: id,
+    });
+  };
 
   return (
     <View style={styles.mealItem}>
@@ -25,18 +41,16 @@ const MealItem = ({ title, imageUrl, Duration, Complexity, Affordablity }) => {
             <Image style={styles.image} source={{ uri: imageUrl }} />
             <Text style={styles.title}>{title}</Text>
           </View>
-          <View style={styles.details}>
-            <Text style={styles.detailItem}>{Duration} M.</Text>
-            <Text style={styles.detailItem}>{Complexity.toUpperCase()}</Text>
-            <Text style={styles.detailItem}>{Affordablity.toUpperCase()}</Text>
-          </View>
+          <MealDetails
+            Duration={Duration}
+            Complexity={Complexity}
+            Affordablity={Affordablity}
+          />
         </View>
       </Pressable>
     </View>
   );
 };
-
-export default MealItem;
 
 const styles = StyleSheet.create({
   image: {
@@ -69,14 +83,5 @@ const styles = StyleSheet.create({
     shadowRadius: 8,
     overflow: Platform.select({ ios: "auto", android: "hidden" }),
   },
-  details: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-    margin: 8,
-  },
-  detailItem: {
-    marginHorizontal: 4,
-    fontSize: 12,
-  },
 });
+export default MealItem;
