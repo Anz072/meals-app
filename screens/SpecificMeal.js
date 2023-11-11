@@ -1,38 +1,92 @@
-import { View, Text, StyleSheet, Image } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  ScrollView,
+  Button,
+} from "react-native";
 import { MEALS } from "../data/dummy-data";
 import MealDetails from "../components/MealDetails";
+import List from "../components/List";
+import { useLayoutEffect } from "react";
+import HeaderButton from "../components/HeaderButton";
 
-const SpecificMeal = ({ route }) => {
+const SpecificMeal = ({ route, navigation }) => {
   const mealID = route.params.mealID;
+  let numbID = 0;
+
+  const headerButtonHandler = () => {};
+
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerRight: () => {
+        return <HeaderButton title="Test" onPress={headerButtonHandler} />;
+      },
+    });
+  }, [navigation, headerButtonHandler]);
 
   const selectedMeal = MEALS.find((meal) => meal.id === mealID);
   return (
-    <View>
+    <ScrollView style={styles.root}>
       <View>
-        <Image style={styles.image} source={{ uri: selectedMeal.imageUrl }} />
-        <Text>{selectedMeal.title}</Text>
+        <View>
+          <Image style={styles.image} source={{ uri: selectedMeal.imageUrl }} />
+          <Text style={styles.title}>{selectedMeal.title}</Text>
+        </View>
+        <MealDetails
+          Duration={selectedMeal.duration}
+          Complexity={selectedMeal.complexity}
+          Affordablity={selectedMeal.affordability}
+        />
+        <Text style={styles.section}>Ingredients:</Text>
+        {selectedMeal.ingredients.map((ingredient) => {
+          return (
+            <Text style={styles.sectionContent} key={ingredient}>
+              {ingredient}
+            </Text>
+          );
+        })}
+
+        <Text style={styles.section}>Steps:</Text>
+        <List numbID={numbID} arr={selectedMeal.steps} />
+        {/* {selectedMeal.steps.map((step) => {
+          numbID++;
+          return (
+            <Text style={styles.sectionContent} key={step}>
+              {numbID}. {step}
+            </Text>
+          );
+        })} */}
       </View>
-      <MealDetails
-        Duration={selectedMeal.duration}
-        Complexity={selectedMeal.complexity}
-        Affordablity={selectedMeal.affordability}
-      />
-      <Text>Ingredients:</Text>
-      {selectedMeal.ingredients.map((ingredient) => {
-        return <Text key={ingredient}>{ingredient}</Text>;
-      })}
-      <Text>Steps:</Text>
-      {selectedMeal.steps.map((step) => {
-        return <Text key={step}>{step}</Text>;
-      })}
-    </View>
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
+  root: {
+    flex: 1,
+    marginVertical: 12,
+  },
   image: {
     width: "100%",
-    height: 200,
+    height: 250,
+  },
+  title: {
+    textAlign: "center",
+    fontSize: 22,
+    fontWeight: "600",
+    marginTop: 10,
+    marginHorizontal: 10,
+  },
+  section: {
+    fontSize: 16,
+    fontWeight: "600",
+    margin: 10,
+  },
+  sectionContent: {
+    marginHorizontal: 10,
+    marginVertical: 2,
   },
 });
 export default SpecificMeal;
