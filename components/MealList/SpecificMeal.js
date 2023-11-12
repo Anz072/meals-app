@@ -1,3 +1,5 @@
+import { useContext, useLayoutEffect } from "react";
+
 import {
   View,
   Text,
@@ -6,27 +8,41 @@ import {
   ScrollView,
   Button,
 } from "react-native";
-import { MEALS } from "../data/dummy-data";
-import MealDetails from "../components/MealDetails";
-import List from "../components/List";
-import { useLayoutEffect } from "react";
-import HeaderButton from "../components/HeaderButton";
+import { MEALS } from "../../data/dummy-data";
+import MealDetails from "../MealDetails";
+import List from "../List";
+import HeaderButton from "../HeaderButton";
+import { FavoritesContext } from "../../store/context/favorites-context";
 
 const SpecificMeal = ({ route, navigation }) => {
+  const favoriteMealscontext = useContext(FavoritesContext);
+
   const mealID = route.params.mealID;
   let numbID = 0;
+  const mealIsFavorite = favoriteMealscontext.ids.includes(mealID);
+  const selectedMeal = MEALS.find((meal) => meal.id === mealID);
 
-  const headerButtonHandler = () => {};
+
+  const headerButtonHandler = () => {
+    // mealIsFavorite ? favoriteMealscontext.addFavorite : favoriteMealscontext.removeFavorite
+    mealIsFavorite
+      ? favoriteMealscontext.removeFavorite(mealID)
+      : favoriteMealscontext.addFavorite(mealID);
+  };
 
   useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () => {
-        return <HeaderButton title="Test" onPress={headerButtonHandler} />;
+        return (
+          <HeaderButton
+            title={mealIsFavorite ? "Remove" : "Add"}
+            onPress={headerButtonHandler}
+          />
+        );
       },
     });
   }, [navigation, headerButtonHandler]);
 
-  const selectedMeal = MEALS.find((meal) => meal.id === mealID);
   return (
     <ScrollView style={styles.root}>
       <View>
@@ -50,14 +66,6 @@ const SpecificMeal = ({ route, navigation }) => {
 
         <Text style={styles.section}>Steps:</Text>
         <List numbID={numbID} arr={selectedMeal.steps} />
-        {/* {selectedMeal.steps.map((step) => {
-          numbID++;
-          return (
-            <Text style={styles.sectionContent} key={step}>
-              {numbID}. {step}
-            </Text>
-          );
-        })} */}
       </View>
     </ScrollView>
   );

@@ -20,7 +20,6 @@ const MealItem = ({
 }) => {
   const navigation = useNavigation();
   const mealItemPress = () => {
-    console.log();
     navigation.navigate("SpecificMeal", {
       mealID: id,
     });

@@ -1,10 +1,10 @@
 import { Pressable, View, StyleSheet, Text } from "react-native"
 
-const HeaderButton = ({onPress}) =>{
+const HeaderButton = ({onPress,title}) =>{
     return (
         <Pressable onPress={onPress}>
             <View style={styles.buttonBody}>
-                <Text style={styles.text}>Test</Text>
+                <Text style={styles.text}>{title}</Text>
             </View>
         </Pressable>
     )
