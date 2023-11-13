@@ -5,10 +5,8 @@ import { StyleSheet, View, Text } from "react-native";
 
 const Favorites = () => {
   const favoriteMealIds = useSelector((state) => state.favoriteMeals.ids);
- 
-  console.log(favoriteMealIds);
+
   const favorites = MEALS.filter((meal) => favoriteMealIds.includes(meal.id));
-  console.log(favorites.length);
 
   return favorites.length !== 0 ? (
     <View>

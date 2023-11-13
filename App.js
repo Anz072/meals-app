@@ -9,8 +9,6 @@ import MealsOverview from "./components/MealList/MealsOverview";
 import SpecificMeal from "./components/MealList/SpecificMeal";
 import Favorites from "./screens/Favorites";
 import { Ionicons } from "@expo/vector-icons";
-import FavoritesProvider from "./store/context/favorites-context";
-import { FavoritesContext } from "./store/context/favorites-context";
 import { Provider } from "react-redux";
 import { store } from "./store/redux/store";
 
