@@ -1,4 +1,5 @@
 import { useContext, useLayoutEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 import {
   View,
@@ -13,21 +14,21 @@ import MealDetails from "../MealDetails";
 import List from "../List";
 import HeaderButton from "../HeaderButton";
 import { FavoritesContext } from "../../store/context/favorites-context";
+import { addFavorite, removeFavorite } from "../../store/redux/favorites";
 
 const SpecificMeal = ({ route, navigation }) => {
-  const favoriteMealscontext = useContext(FavoritesContext);
+  const favoriteMealIds = useSelector((state) => state.favoriteMeals.ids);
+  const dispatch = useDispatch();
 
   const mealID = route.params.mealID;
   let numbID = 0;
-  const mealIsFavorite = favoriteMealscontext.ids.includes(mealID);
+  const mealIsFavorite = favoriteMealIds.includes(mealID);
   const selectedMeal = MEALS.find((meal) => meal.id === mealID);
 
-
   const headerButtonHandler = () => {
-    // mealIsFavorite ? favoriteMealscontext.addFavorite : favoriteMealscontext.removeFavorite
     mealIsFavorite
-      ? favoriteMealscontext.removeFavorite(mealID)
-      : favoriteMealscontext.addFavorite(mealID);
+      ? dispatch(removeFavorite({ id: mealID }))
+      : dispatch(addFavorite({ id: mealID }));
   };
 
   useLayoutEffect(() => {
